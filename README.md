@@ -18,7 +18,7 @@ Disable SELinux only if you plan to not use it. Use `Permissive` mode if you jus
 
 ## Requirements
 
-- Chef 12.5 or higher
+- Chef 12.7 or higher
 
 
 ## Platform:
@@ -28,7 +28,7 @@ The following platforms have been tested with Test Kitchen:
 centos-6
 centos-7
 
-On debian and ubuntu systems if you want to enable SELinux you will need to do a few extra steps. As these are potentially destructive, rather than adding them to this cookbook adding this information here:
+**NOTE** Support for debian and ubuntu is deprecated. It will be removed with the next release. The behavior on debian and rhel family operating systems is different as of 2.0.0. On debian and ubuntu systems if you want to enable SELinux you will need to do a few extra steps. As these are potentially destructive, rather than adding them to this cookbook adding this information here:
 
 * _selinux-activate_ - Running `selinux-activate` will add parameters to the kernel, update grub configuration files, and set the file system to relabel upon reboot
 * _reboot_ for settings to take effect.
@@ -63,6 +63,7 @@ the `/etc/selinux/config` file from a template.
 
 * `temporary` - true, false, default false. Allows the temporary change between permisive and enabled states which don't require a reboot. 
 * `selinuxtype` - targeted, mls, default targeted. Determines the policy that will be configured in the `/etc/selinux/config` file. The default value is `targeted` which enables selinux in a mode where only selected processes are protected. `mls` is multilevel security which enables selinux in a mode where all processes are protected.
+
 #### Examples
 
 Simply set SELinux to enforcing or permissive:
@@ -76,11 +77,11 @@ Simply set SELinux to enforcing or permissive:
     end
 
 The action here is based on the value of the
-`node['selinux']['state']` attribute, which we convert to lower-case
+`node['selinux']['status']` attribute, which we convert to lower-case
 and make a symbol to pass to the action.
 
-    selinux_state "SELinux #{node['selinux']['state'].capitalize}" do
-      action node['selinux']['state'].downcase.to_sym
+    selinux_state "SELinux #{node['selinux']['status'].capitalize}" do
+      action node['selinux']['status'].downcase.to_sym
     end
 
 ### selinux\_install
@@ -94,7 +95,7 @@ All recipes will deprecate in the near future as they are just using the `selinu
 
 ## default
 
-The default recipe will use the attribute `node['selinux']['state']`
+The default recipe will use the attribute `node['selinux']['status']`
 in the `selinux_state` LWRP's action. By default, this will be `:enforcing`.
 
 ## enforcing
@@ -113,7 +114,7 @@ Usage
 =====
 
 By default, this cookbook will have SELinux enforcing by default, as
-the default recipe uses the `node['selinux']['state']` attribute,
+the default recipe uses the `node['selinux']['status']` attribute,
 which is "enforcing." This is in line with the policy of enforcing by
 default on RHEL family distributions.
 
@@ -123,7 +124,7 @@ You can simply set the attribute in a role applied to the node:
     description "Base role applied to all nodes."
     default_attributes(
       "selinux" => {
-        "state" => "permissive"
+        "status" => "permissive"
       }
     )
 
@@ -138,9 +139,9 @@ Or, you can apply the recipe to the run list (e.g., in a role):
 
 ## License & Authors
 
-**Author:** Sean OMeara ([sean@sean.io](mailto:sean@sean.io))
-**Author:** Joshua Timberman ([joshua@chef.io](mailto:joshua@chef.io))
-**Author:** Jennifer Davis ([sigje@chef.io](mailto:sigje@chef.io))
+* **Author:** Sean OMeara ([sean@sean.io](mailto:sean@sean.io))
+* **Author:** Joshua Timberman ([joshua@chef.io](mailto:joshua@chef.io))
+* **Author:** Jennifer Davis ([sigje@chef.io](mailto:sigje@chef.io))
 
 **Copyright:** 2008-2017, Chef Software, Inc.
 
