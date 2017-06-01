@@ -1,5 +1,25 @@
-selinux Cookbook CHANGELOG
-==========================
+# selinux Cookbook CHANGELOG
+This file is used to list changes made in each version of the selinux cookbook.
+
+## 2.0.1 (2017-05-30)
+
+- Remove class_eval usage
+
+## 2.0.0 (2017-05-15)
+
+- Deprecate debian family support 
+- Make default for rhel family use setenforce regardless of whether a temporary change or not. Eliminates the requirement for a required reboot to effect change in the running system.
+
+## 1.0.4 (2017-04-17)
+
+- Switch to local delivery for testing
+- Use the standard apache license string
+- Updates for early Chef 12 and Chef 13 compatibility
+- Update and add copyright blocks to the various files
+
+## 1.0.3 (2017-03-14)
+
+- Fix requirement in metadata to reflect need for Chef 12.7 as using action_class in state resource.
 
 ## 1.0.2 (2017-03-01)
 
@@ -11,8 +31,8 @@ selinux Cookbook CHANGELOG
 
 ## 1.0.0 (2017-02-26)
 
+- **BREAKING CHANGE** `node['selinux']['state']` is now `node['selinux']['status']` to meet Chef 13 requirements.
 - Update to current cookbook engineering standards
-- Removed property `state` of resource `selinux_state` as `state` overwrites an existing method. Chef 13 exception fix.
 - Rewrite LWRP to 12.5 resources
 - Resolved cookstyle errors
 - Update package information for debian based on https://debian-handbook.info/browse/stable/sect.selinux.html
